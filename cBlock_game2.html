@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Zen+Dots&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mesunie Canvas Game</title>
+    <style>
+      html {
+        height: 100%;
+        min-height: 100%;
+      }
+
+      body {
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-image: linear-gradient(#3decff, rgb(122, 255, 246));
+        animation: fadeInAnimation ease 2s;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+      }
+
+      @keyframes fadeInAnimation {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+
+      .start-menu {
+        text-align: center;
+        position: absolute;
+        background-image: linear-gradient(#3decff, rgb(122, 255, 246));
+        width: 100%;
+        height: 100%;
+      }
+
+      .title-container {
+        margin: auto;
+        background-color: none;
+        height: 200px;
+        width: 200px;
+        text-align: center;
+        padding: 40px;
+        background-color: rgb(227, 255, 45);
+        border-radius: 15px 30px;
+        margin-top: 250px;
+        border: 10px inset rgb(255, 46, 81);
+        box-shadow: 0 14px 28px rgba(237, 230, 230, 0.25),
+          0 10px 10px rgba(0, 0, 0, 0.22);
+      }
+
+      .title-text {
+        font-family: "Zen Dots", cursive;
+        color: rgb(255, 46, 81);
+        font-size: 50px;
+        font-weight: 100;
+
+        letter-spacing: -4px;
+        text-transform: uppercase;
+      }
+
+      .title-description {
+        font-family: "Zen Dots", cursive;
+        text-transform: uppercase;
+        font-size: 15px;
+        opacity: 0.4;
+      }
+
+      .start-button {
+        font-family: "zen dots", cursive;
+        text-transform: uppercase;
+        font-size: 15px;
+        font-weight: 100;
+        cursor: pointer;
+        transition: all 0.5s;
+        width: 110px;
+        text-align: center;
+        padding: 10px;
+        width: 145px;
+        
+        
+      }
+
+      .start-button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+        
+      }
+
+      .start-button span:after {
+        content: "\00bb";
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+      }
+
+      .start-button:hover span {
+        padding-right: 25px;
+      }
+
+      .start-button:hover span:after {
+        opacity: 1;
+        right: 0;
+      }
+
+      .start-button:active {
+        background-color: rgb(0, 255, 0);
+      }
+
+      .hide {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 1s 0s, opacity 1s linear;
+      }
+
+      .visible {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 1s linear;
+      }
+
+      .floating {
+        animation-name: floating;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+        }
+
+      @keyframes floating {
+          0% { transform: translate(0,  0px); }
+          50%  { transform: translate(0, 15px); }
+          100%   { transform: translate(0, -0px); }   
+      }
+
+      
+
+      
+
+      .game-instructions {
+        background-color: rgba(255, 255, 255, 0.477);
+        margin: auto;
+        height: 200px;
+        width: 550px;
+        margin: auto;
+        margin-top: 450px;
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: none;
+        left: 0;
+        right: 0;
+        text-align: center;
+        border-radius: 15px 30px;
+        border: 1px solid rgb(255, 46, 81);
+        padding: 30px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        
+                
+      }
+
+      .direction-button {
+        cursor: pointer;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 10px;
+        margin-bottom: none;
+        padding-bottom: none;
+        font-family: 'Roboto', sans-serif;
+        text-transform: uppercase;
+        height: 20px;
+        width: 70px;
+        border-radius: none;
+        border: 1px solid black;
+        background-color: white;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        
+
+        
+        
+
+      }
+
+      .direction-button:active {
+        transform: translateY(4px);
+        height: 20px;
+        width: 70px;
+        border: 1px solid black;
+        color: red;
+      }
+
+      .direction-button:hover {
+        background-color: rgb(0, 255, 0);
+        border: 1px solid black;
+        height: 20px;
+        width: 70px;
+        
+      }
+        
+
+      .player-guide {
+        list-style-type: none;
+        font-family: 'Roboto', sans-serif;
+        font-size: 15px;
+        font-weight: 100;
+        padding: 10px;
+        letter-spacing: 1px;
+        line-height: 30px;
+      }
+
+      .continue-button {
+        padding: 5px;
+        width: 80px;
+        height: 60px;
+        border: 1px solid rgb(255, 255, 255);
+        background-color: rgb(0, 255, 0);
+        transition: all 0.5s;
+        cursor: pointer;
+        border-radius: 20px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 25px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+      }
+
+      .continue-button span {
+        cursor: poiner;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+      }
+
+      .continue-button span:after {
+        content: "\00bb";
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+      }
+
+      .continue-button:hover span {
+        padding-right: 25px;
+      }
+
+      .continue-button:hover span:after {
+        opacity: 1;
+        right: 0;
+      }
+
+
+
+      .canvas-container {
+        width: 500px;
+        height: 400px;
+        background-color: white;
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: none;
+        left: 0;
+        right: 0;
+        text-align: center;
+        margin-top: 35px;
+        border: 1px solid black;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      }
+
+      .number-of-games {
+        font-family: 'Roboto', sans-serif;
+        text-align: center;
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        right: 0;
+        left: 0;
+      }
+
+      #canvas-game {
+        background-color: #39FF14;
+        animation: fadeInAnimation ease 2s;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+
+      }
+
+      @keyframes fadeInAnimation {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .number-of-games {
+          transform: scale(1);
+          animation: pulse-black 2s infinite;
+          margin: auto;
+          position: absolute;
+          top: 15;
+          left: 0;
+          letter-spacing: 1px;
+        }
+
+
+        @keyframes pulse-black {
+          0% {
+            transform: scale(0.95);
+            
+          }
+          
+          70% {
+            transform: scale(1);
+            
+          }
+          
+          100% {
+            transform: scale(0.95);
+            
+          }
+        }
+
+
+
+
+
+        .game-over-screen {
+          background-color: black;
+          animation: fadeInAnimation 3s;
+
+          
+         
+        }
+
+        .game-over-text {
+          color: white;
+          font-family: "zen dots", cursive;
+          font-size: 50px;
+          text-align: center;
+          margin-top: 150px;
+        }
+
+        .prompt-restart-text {
+          font-family: 'Roboto', sans-serif;
+          
+          color: white;
+        }
+
+        .player-score-display {
+          color: white;
+          font-family: 'Roboto', sans-serif;
+          
+        }
+
+        .instant-hide {
+          font-family: 'Roboto', sans-serif;
+          display: none;
+        }
+
+        .game-over-button {
+          cursor: pointer;
+          border-radius: none;
+          font-family: 'Roboto', sans-serif;
+          text-transform: uppercase;
+          border: 1px inset rgb(255, 46, 81);
+          padding: 10px;
+          text-align: center;
+          background-color: white;
+          height: 35px;
+          width: 120px;
+
+        }
+
+        .game-over-button:hover {
+          background-color:rgb(227, 255, 45);
+          color:rgb(255, 46, 81);
+        }
+
+        .game-over-button:active {
+          transform: translateY(4px);
+
+        }
+
+
+
+      
+    </style>
+  </head>
+  <body>
+    <div class="start-menu" id="start-menu">
+      <div class="title-container">
+        <h1 class="title-text" id="title-text">Block Game</h1>
+        <p class="title-description">by @mesunie</p>
+      </div>
+      <br />
+      <button type="button" class="start-button" id="start-button">
+        <span>Start</span>
+      </button>
+    </div>
+    <div class="canvas-container hide" id="canvas-container">
+      <!--GAME GOES HERE-->
+      <div id="game-over-screen" class="instant-hide">
+      <p class="game-over-text" id="game-over-text">GAME OVER</p>
+      <p class="player-score-display" id="player-score-display">Your score: </p>
+      <p class="prompt-restart-text" id="prompt-restart-text">Would you like to 
+        restart the game?</p>
+        <div class="restart-buttons" id="restart-buttons">
+          <button type="button" class="game-over-button" id="restart-button" onclick="gameArea.restartGame()">Restart</button>
+          <button type="button" class="game-over-button" id="exit-button" onclick="gameArea.exitGame()">Exit</button>
+        </div>
+      </div>
+    </div>
+    <p class="number-of-games hide" id="number-of-games"></p>
+    <div class="game-instructions hide" id="game-instructions">
+      <div class="button-container" id="button-container">
+        <button type="button" class="direction-button disabled" id="up-button" onmousedown="moveUp()" onmouseup="stopMove()" ontouchstart="moveUp()"> Up &uarr;</button><br>
+        <button type="button" class="direction-button" id="left-button" onmousedown="moveLeft()" onmouseup="stopMove()" ontouchstart="moveLeft()">&larr; Left</button>
+        <button type="button" class="direction-button" id="right-button" onmousedown="moveRight()" onmouseup="stopMove()" ontouchstart="moveRight()">Right&rarr;</button><br>
+        <button type="button" class="direction-button" id="down-button" onmousedown="moveDown()" onmouseup="stopMove()" ontouchstart="moveDown()">&darr; Down</button><br>
+        <ul class="player-guide" id="player-guide">
+          <li><strong>Hold</strong> the direction buttons to move your <strong>red</strong> block.</li>
+          <li><strong>Avoid</strong> the <strong>yellow blocks</strong> for as long as possible!</li>
+          <li>If you hit the yellow blocks, its <strong>GAME OVER!</strong> Good luck!</li>
+        </ul>
+        <br>
+        <button type="button" class="continue-button floating" id="continue-button"><span>OK!</span></button>
+      </div>
+      </div>
+
+      
+
+    <script>
+      let playerScore;
+      let playerSquare;
+      let gameObstacles = [];
+      let playerGame = 0;
+
+      const restartButton = document.getElementById('restart-button');
+      const exitButton = document.getElementById('exit-button');
+      const gameOverScreen = document.getElementById('game-over-screen');
+      const playerScoreDisplay = document.getElementById('player-score-display');     
+      const playerGameText = document.getElementById("number-of-games");
+      const canvasContainer = document.getElementById("canvas-container");      
+      //start button to show directions
+      const startButton = document.getElementById('start-button');
+      startButton.addEventListener('click', displayDirections);
+
+      //OK button to continue to game (spawn canvas)
+      const continueButton = document.getElementById('continue-button');
+      continueButton.addEventListener('click', startGame);
+
+
+      //defined for initial changes in display, not block scoped
+      const startMenu = document.getElementById('start-menu');
+      const gameInstructions = document.getElementById('game-instructions');
+
+
+      //after user presses the "START" button
+      function displayDirections() {
+        console.log("hello!");
+        startMenu.classList.add("hide");
+        startButton.classList.add("instant-hide");
+        gameInstructions.classList.add("visible");
+        canvasContainer.classList.add("visible");
+      }
+
+      //after user presses "Ok!"
+      function startGame() {
+        playerGame +=1;
+        playerScore = 0;
+        continueButton.classList.add("hide");
+        playerGameText.classList.add("visible");
+        playerGameText.innerText = "GAME:  " + playerGame + "";
+        gameArea.start();     
+        playerSquare = new component(40, 40, "rgb(255, 46, 81)", 10, 120, "player-square");
+        gameObstacle = new component(10, 200, "rgb(227, 255, 45)", 300, 120, "obstacle");
+        playerScore = new component("50px", "Arial", "black", 280, 40, "text", "text");     
+      }
+
+      //creating canvas for game
+      const gameArea = {
+        canvas : document.createElement('canvas'),      
+        start : function() {         
+          this.canvas.id = 'canvas-game';
+          console.log(this.canvas.id);
+          this.canvas.width = 500;
+          this.canvas.height = 400;
+          //canvas styling in CSS
+          this.canvas.classList.add("visible");
+          this.context = this.canvas.getContext("2d");
+          document.body.appendChild(this.canvas);
+          document.getElementById('canvas-container').appendChild(this.canvas);
+          this.frameNo = 0;
+          this.interval = setInterval(updateGameArea, 20);
+        
+        },
+        clear : function() {
+          //to continue drawing the components with frameRate
+          this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);          
+          
+        },
+        stop : function() {
+          //when player HITS game obstacles, displaying the game over screen
+          clearInterval(this.interval);
+          const canvasGame = document.getElementById('canvas-game');
+          const gameOverScreen = document.getElementById('game-over-screen');
+          const gameOverText = document.getElementById('game-over-text');
+          gameOverScreen.classList.remove("instant-hide");
+          canvasGame.classList.add("instant-hide");
+          canvasContainer.classList.add("game-over-screen");
+          playerScoreDisplay.innerText = "Your score: " + gameArea.frameNo + "";
+        },
+        restartGame : function() {
+          gameArea.clear();
+          gameObstacles.length = 0; 
+          //BLOCK scoped variables    
+          const canvasGame = document.getElementById('canvas-game');
+          const gameOverScreen = document.getElementById('game-over-screen');
+          const gameOverText = document.getElementById('game-over-text');
+          const playerSquare = document.getElementById('player-square');
+          const gameObstacle = document.getElementById('game-obstacle');         
+          gameOverScreen.classList.add("instant-hide");
+          canvasContainer.classList.remove("game-over-screen");
+          canvasContainer.removeChild(canvasGame);
+          canvasGame.classList.remove("instant-hide");         
+          startGame();       
+        },
+        exitGame : function() {
+          window.alert("Thanks for playing!");
+          location.reload();          
+        }
+      }
+
+      //need current frameNumber to correspond with the interval, in gameArea object
+      function everyInterval(n) {
+        if ((gameArea.frameNo / n) % 1 == 0) {
+          return true;
+        }
+        return false;
+      }
+
+      //creating the components for the game
+      function component(width, height, color, x, y, id, type, img) {
+        this.type = type;
+        this.width = width;
+        this.height = height;
+        this.speedX = 0;
+        this.speedY = 0;
+        this.x = x;
+        this.y = y;
+        this.id = id;
+        this.update = function() {         
+        ctx = gameArea.context;
+        if (this.type == "text") {
+          ctx.font = this.width + "" + this.height;
+          ctx.fillStyle = color;
+          ctx.fillText(this.text, this.x, this.y);
+        } else {
+          ctx.fillStyle = color;
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+
+        }
+        
+      //as component moves across screen   
+        }
+        this.newPos = function() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+        }
+        // if red component "hits" (matches the position of the gameObstacles)
+        this.crashWith = function(otherObj) {
+                let myLeft = this.x;
+                let myRight = this.x + (this.width);
+                let myTop = this.y;
+                let myBottom = this.y + (this.height);
+                let otherLeft = otherObj.x;
+                let otherRight = otherObj.x + (otherObj.width);
+                let otherTop = otherObj.y;
+                let otherBottom = otherObj.y + (otherObj.height);
+                let crash = true;
+                if ((myBottom < otherTop) ||
+                (myTop > otherBottom) ||
+                (myRight < otherLeft) ||
+                (myLeft > otherRight)) {
+                    crash = false;
+                }
+                return crash;
+
+        
+        
+      }
+    }
+      //for component to show up, and not leave trail, and to stop "moving" when crashed with
+      //also creating multiple components, adding to the overrall length of the gameObstacles object
+      function updateGameArea() {  
+        let x, y;
+        for (i = 0; i < gameObstacles.length; i+= 1) {
+          if (playerSquare.crashWith(gameObstacles[i])) {
+            gameArea.stop();
+            return;
+          }
+        }
+        gameArea.clear();
+        gameArea.frameNo += 1;
+        if (gameArea.frameNo == 1 || everyInterval(150)) {
+          x = gameArea.canvas.width;
+          minHeight = 20;
+          maxHeight = 200;
+          height = Math.floor(Math.random() * (maxHeight - minHeight +1) +minHeight);
+          minGap = 50;
+          maxGap = 200;
+          gap = Math.floor(Math.random() * (maxGap - minGap +1) +minGap);
+          gameObstacles.push(new component(10, height, "rgb(227, 255, 45)", x, 0));
+          gameObstacles.push(new component(10, x - height - gap, "rgb(227, 255, 45)", x, height + gap));
+        }
+        for (i = 0; i < gameObstacles.length; i += 1) {
+          gameObstacles[i].x += -1;
+          gameObstacles[i].update();
+        }
+        playerScore.text = "SCORE: " + gameArea.frameNo;
+        playerScore.update();
+        playerSquare.newPos();
+        playerSquare.update();
+
+
+
+
+      }
+
+      //all direction buttons     
+        function moveUp() {
+          playerSquare.speedY -= 1; 
+      }
+
+        function moveDown() {
+          playerSquare.speedY += 1; 
+      }
+
+        function moveLeft() {
+         playerSquare.speedX -= 1;
+      }
+
+        function moveRight() {
+          playerSquare.speedX += 1;
+      }
+
+      function stopMove() {
+        playerSquare.speedX = 0;
+        playerSquare.speedY = 0;
+      }
+
+
+
+      
+
+     
+
+
+      
+
+
+     
+
+      
+        
+    </script>
+  </body>
+</html>
